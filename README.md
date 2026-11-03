@@ -21,6 +21,14 @@ Use all of it or just one part. Each piece works on its own.
 
 ## What it looks like
 
+### Fully set up
+
+With your apps installed and sorted, streaming, live video and your media server all fit on one screen, with no ads.
+
+![A fully set-up home screen](docs/img/completa.png)
+
+> The **Emuladores** and **Mi PC** rows come from a personal setup that streams games from a PC. They aren't included in this project, so you won't see them after installing. The apps themselves aren't included either.
+
 ### Your apps, your way
 
 **Hold OK** on an app to open a menu where you can move it, send it to another row, hide it or uninstall it. No PC needed.
