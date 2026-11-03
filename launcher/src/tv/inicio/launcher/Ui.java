@@ -18,6 +18,11 @@ final class Ui {
     private Ui() {
     }
 
+    /** The on-screen text follows the TV's language: Spanish if it's set to Spanish, otherwise English. */
+    static String t(Context context, String english, String spanish) {
+        return "es".equals(context.getResources().getConfiguration().locale.getLanguage()) ? spanish : english;
+    }
+
     static int dp(Context context, float v) {
         return Math.round(v * context.getResources().getDisplayMetrics().density);
     }

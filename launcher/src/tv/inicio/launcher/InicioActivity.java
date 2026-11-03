@@ -302,7 +302,7 @@ public class InicioActivity extends Activity {
         clima.setPadding(0, 0, dp(24), 0);
         bar.addView(clima);
 
-        TextView settings = pill("Ajustes");
+        TextView settings = pill(t("Settings", "Ajustes"));
         settings.setOnClickListener(v -> launch(new Intent(Settings.ACTION_SETTINGS)));
         bar.addView(settings);
         return bar;
@@ -310,6 +310,20 @@ public class InicioActivity extends Activity {
 
     private void styleText(TextView t, int color, float sp, String family) {
         Ui.style(t, color, sp, family);
+    }
+
+    private String t(String english, String spanish) {
+        return Ui.t(this, english, spanish);
+    }
+
+    /** Rows are saved under their Spanish names; this is the name the screen shows. */
+    private String rowName(String row) {
+        switch (row) {
+            case "En vivo": return t("Live", row);
+            case "Mi servidor": return t("My server", row);
+            case MORE: return t("More", row);
+            default: return row;
+        }
     }
 
     private TextView pill(String text) {
@@ -512,7 +526,7 @@ public class InicioActivity extends Activity {
     private void addRow(String title, List<String> pkgs) {
         if (pkgs.isEmpty()) return;
         TextView[] label = new TextView[1];
-        LinearLayout line = rowLine(title, label);
+        LinearLayout line = rowLine(rowName(title), label);
         LinearLayout strip = strip(line);
         for (String pkg : pkgs) {
             App a = appsByPkg.get(pkg);
@@ -532,7 +546,7 @@ public class InicioActivity extends Activity {
         Map<String, Intent> inputs = inputs();
         if (inputs.isEmpty()) return;
         TextView[] label = new TextView[1];
-        LinearLayout line = rowLine("Entradas", label);
+        LinearLayout line = rowLine(t("Inputs", "Entradas"), label);
         LinearLayout strip = strip(line);
         for (Map.Entry<String, Intent> in : inputs.entrySet()) {
             strip.addView(card(in.getKey(), null, null, in.getValue(), label[0]));
@@ -564,19 +578,19 @@ public class InicioActivity extends Activity {
         List<String> pkgs = shownRows.get(row);
         int pos = pkgs.indexOf(app.pkg);
         if (pos > 0) {
-            labels.add("◀  Mover a la izquierda");
+            labels.add("◀  " + t("Move left", "Mover a la izquierda"));
             actions.add(() -> { pkgs.remove(pos); pkgs.add(pos - 1, app.pkg); applyLayout(app.pkg); });
         }
         if (pos < pkgs.size() - 1) {
-            labels.add("▶  Mover a la derecha");
+            labels.add("▶  " + t("Move right", "Mover a la derecha"));
             actions.add(() -> { pkgs.remove(pos); pkgs.add(pos + 1, app.pkg); applyLayout(app.pkg); });
         }
         for (String other : shownRows.keySet()) {
             if (other.equals(row)) continue;
-            labels.add("⇅  Pasar a «" + other + "»");
+            labels.add("⇅  " + t("Move to", "Pasar a") + " «" + rowName(other) + "»");
             actions.add(() -> { pkgs.remove(app.pkg); shownRows.get(other).add(app.pkg); applyLayout(app.pkg); });
         }
-        labels.add("✕  Ocultar");
+        labels.add("✕  " + t("Hide", "Ocultar"));
         actions.add(() -> {
             Set<String> h = hidden();
             h.add(app.pkg);
@@ -585,7 +599,7 @@ public class InicioActivity extends Activity {
             applyLayout(null);
         });
         if (!app.system) {
-            labels.add("🗑  Desinstalar");
+            labels.add("🗑  " + t("Uninstall", "Desinstalar"));
             actions.add(() -> {
                 leftForApp = true;
                 startActivity(new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.pkg)));
@@ -594,7 +608,7 @@ public class InicioActivity extends Activity {
         List<String> hiddenNow = new ArrayList<>();
         for (String h : hidden()) if (appsByPkg.containsKey(h)) hiddenNow.add(h);
         if (!hiddenNow.isEmpty()) {
-            labels.add("👁  Mostrar apps ocultas (" + hiddenNow.size() + ")");
+            labels.add("👁  " + t("Show hidden apps", "Mostrar apps ocultas") + " (" + hiddenNow.size() + ")");
             actions.add(() -> showHidden(hiddenNow));
         }
         menu = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
@@ -607,7 +621,7 @@ public class InicioActivity extends Activity {
         String[] names = new String[hiddenNow.size()];
         for (int i = 0; i < names.length; i++) names[i] = appsByPkg.get(hiddenNow.get(i)).label.toString();
         new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setTitle("Mostrar de nuevo")
+                .setTitle(t("Show again", "Mostrar de nuevo"))
                 .setItems(names, (d, which) -> {
                     Set<String> h = hidden();
                     h.remove(hiddenNow.get(which));

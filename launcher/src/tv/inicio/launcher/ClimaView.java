@@ -109,8 +109,8 @@ public final class ClimaView extends LinearLayout {
         handler.postDelayed(tick, EVERY_MS);
     }
 
-    /** "23 h ☁️ 19°   02 h 🌧️ 18°   05 h ☁️ 17°   Mañana 🌤️ 14°/26°" */
-    private static String forecast(JSONObject all, String nowIso) throws Exception {
+    /** "23 h ☁️ 19°   02 h 🌧️ 18°   05 h ☁️ 17°   Tomorrow 🌤️ 14°/26°" */
+    private String forecast(JSONObject all, String nowIso) throws Exception {
         JSONObject hourly = all.getJSONObject("hourly");
         JSONArray times = hourly.getJSONArray("time");
         String thisHour = nowIso.substring(0, 13);
@@ -125,7 +125,7 @@ public final class ClimaView extends LinearLayout {
                     + Math.round(hourly.getJSONArray("temperature_2m").getDouble(i)) + "°");
         }
         JSONObject daily = all.getJSONObject("daily");
-        parts.add("Mañana " + icon(daily.getJSONArray("weather_code").getInt(1), true) + " "
+        parts.add(Ui.t(getContext(), "Tomorrow", "Mañana") + " " + icon(daily.getJSONArray("weather_code").getInt(1), true) + " "
                 + Math.round(daily.getJSONArray("temperature_2m_min").getDouble(1)) + "°/"
                 + Math.round(daily.getJSONArray("temperature_2m_max").getDouble(1)) + "°");
         return TextUtils.join("   ", parts);
@@ -144,16 +144,17 @@ public final class ClimaView extends LinearLayout {
         return "⛈️";
     }
 
-    private static String describe(int code) {
-        if (code == 0) return "Despejado";
-        if (code <= 2) return "Algo nublado";
-        if (code == 3) return "Nublado";
-        if (code <= 48) return "Niebla";
-        if (code <= 57) return "Llovizna";
-        if (code <= 67) return "Lluvia";
-        if (code <= 77) return "Nieve";
-        if (code <= 82) return "Chaparrones";
-        if (code <= 86) return "Nevadas";
-        return "Tormenta";
+    private String describe(int code) {
+        Context c = getContext();
+        if (code == 0) return Ui.t(c, "Clear", "Despejado");
+        if (code <= 2) return Ui.t(c, "Partly cloudy", "Algo nublado");
+        if (code == 3) return Ui.t(c, "Cloudy", "Nublado");
+        if (code <= 48) return Ui.t(c, "Fog", "Niebla");
+        if (code <= 57) return Ui.t(c, "Drizzle", "Llovizna");
+        if (code <= 67) return Ui.t(c, "Rain", "Lluvia");
+        if (code <= 77) return Ui.t(c, "Snow", "Nieve");
+        if (code <= 82) return Ui.t(c, "Showers", "Chaparrones");
+        if (code <= 86) return Ui.t(c, "Snow showers", "Nevadas");
+        return Ui.t(c, "Storm", "Tormenta");
     }
 }

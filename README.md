@@ -5,7 +5,7 @@ No root needed, and nothing is permanently deleted.
 
 ![Home screen](docs/img/inicio.png)
 
-> The on-screen text in the apps is in Spanish. "Inicio" means "Home".
+> The apps follow your TV's language: Spanish if it's set to Spanish, English for any other language. The pictures below come from a TV in Spanish. "Inicio" means "Home".
 
 ## What's included
 
@@ -172,7 +172,7 @@ Reinstalling Inicio disconnects the accessibility service, and Home goes back to
 | Default background | Replace `fondo.png` in the same folders |
 | Rotating wallpapers | Copy them with `-Wallpapers`, or by hand to `/sdcard/Pictures/Fondos` |
 | App rows | `DEFAULT_ROWS` in [`InicioActivity.java`](launcher/src/tv/inicio/launcher/InicioActivity.java) |
-| Bichito's greeting and phrases | `HELLO` and `WORDS` in [`Bichito.java`](launcher/src/tv/inicio/launcher/Bichito.java) |
+| Bichito's greeting and phrases | The `Bichito` constructor, `WORDS` and `WORDS_ES` in [`Bichito.java`](launcher/src/tv/inicio/launcher/Bichito.java) |
 
 After changing anything, run `build.ps1` and `install.ps1` again.
 

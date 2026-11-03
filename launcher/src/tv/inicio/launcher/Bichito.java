@@ -45,14 +45,16 @@ public class Bichito extends View {
     private static final String SPINNER = "|/-\\";
     /** What it pretends to be doing. */
     private static final String[] WORDS = {
+            "Thinking", "Cooking", "Calculating", "Reading", "Strolling", "Tidying", "Whistling",
+            "Dancing", "Drawing", "Dreaming", "Researching", "Sweeping", "Sniffing", "Trotting",
+    };
+    private static final String[] WORDS_ES = {
             "Pensando", "Cocinando", "Calculando", "Leyendo", "Paseando", "Ordenando", "Silbando",
             "Bailando", "Dibujando", "Soñando", "Investigando", "Barriendo", "Husmeando", "Trotando",
     };
     private static final String[] SNORES = {"z", "zZ", "zZz"};
 
-    private static final String HELLO = "¡Hola!", HOORAY = "¡Bien!";
-    private static final String XMAS_HELLO = "¡Feliz Navidad!", NEW_YEAR_HELLO = "¡Feliz año!";
-    private static final String LETTERS = "HolaFn¡!BiezñNvd";
+    private static final String LETTERS = "HolaFn¡!BiezñNvdYyMrChstmpw";
     private static final String[][] GLYPHS = {
             {"X...X", "X...X", "X...X", "XXXXX", "X...X", "X...X", "X...X"},
             {".....", ".....", ".XXX.", "X...X", "X...X", "X...X", ".XXX."},
@@ -70,6 +72,17 @@ public class Bichito extends View {
             {"X...X", "XX..X", "XX..X", "X.X.X", "X..XX", "X..XX", "X...X"},
             {".....", ".....", "X...X", "X...X", "X...X", ".X.X.", "..X.."},
             {"....X", "....X", ".XX.X", "X..XX", "X...X", "X...X", ".XXXX"},
+            {"X...X", "X...X", ".X.X.", "..X..", "..X..", "..X..", "..X.."},
+            {".....", ".....", "X...X", "X...X", ".XXXX", "....X", ".XXX."},
+            {"X...X", "XX.XX", "X.X.X", "X.X.X", "X...X", "X...X", "X...X"},
+            {".....", ".....", "X.XX.", "XX..X", "X....", "X....", "X...."},
+            {".XXX.", "X...X", "X....", "X....", "X....", "X...X", ".XXX."},
+            {"X....", "X....", "X.XX.", "XX..X", "X...X", "X...X", "X...X"},
+            {".....", ".....", ".XXXX", "X....", ".XXX.", "....X", "XXXX."},
+            {"..X..", "..X..", "XXXXX", "..X..", "..X..", "..X..", "...XX"},
+            {".....", ".....", "XX.X.", "X.X.X", "X.X.X", "X.X.X", "X.X.X"},
+            {".....", ".....", "XXXX.", "X...X", "XXXX.", "X....", "X...."},
+            {".....", ".....", "X...X", "X...X", "X.X.X", "X.X.X", ".X.X."},
     };
     private static final int GLYPH_W = 5, GLYPH_H = 7;
 
@@ -112,7 +125,8 @@ public class Bichito extends View {
     private final Runnable tick = this::tick;
     private final Random random = new Random();
     /** Shuffled once and walked in order, so every word comes up before any repeats. */
-    private final List<String> words = new ArrayList<>(Arrays.asList(WORDS));
+    private final List<String> words;
+    private final String hello, hooray, xmasHello, newYearHello;
     private int nextWord;
     private final Paint pixels = new Paint();
     private final Paint text = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -127,13 +141,19 @@ public class Bichito extends View {
     private int logoW, logoH, logoShift, logoUp, logoDip;
     private boolean nightTime, placed, greet, umbrella, scarf, sunglasses;
     private long awakeUntil, saidAt, visitedAt, shelteredAt, fireworksAt, lookUntil;
-    private String word = "", saying = HELLO;
+    private String word = "", saying;
     private Fiesta fiesta = Fiesta.NONE;
     private int lookX, lookY, secretStep;
 
     public Bichito(Context context) {
         super(context);
         p = Math.round(4 * getResources().getDisplayMetrics().density);
+        hello = saying = Ui.t(context, "Hello!", "¡Hola!");
+        hooray = Ui.t(context, "Yay!", "¡Bien!");
+        xmasHello = Ui.t(context, "Merry Christmas!", "¡Feliz Navidad!");
+        newYearHello = Ui.t(context, "Happy New Year!", "¡Feliz año!");
+        boolean spanish = hello.equals("¡Hola!");
+        words = new ArrayList<>(Arrays.asList(spanish ? WORDS_ES : WORDS));
         Collections.shuffle(words, random);
         text.setColor(BODY);
         text.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
@@ -251,9 +271,9 @@ public class Bichito extends View {
 
     private String hello() {
         switch (fiesta) {
-            case XMAS: return XMAS_HELLO;
-            case NEW_YEAR: return NEW_YEAR_HELLO;
-            default: return HELLO;
+            case XMAS: return xmasHello;
+            case NEW_YEAR: return newYearHello;
+            default: return hello;
         }
     }
 
@@ -373,7 +393,7 @@ public class Bichito extends View {
                 break;
             case PARTY:
                 if (++frame > PARTY_FRAMES) {
-                    saying = HOORAY;
+                    saying = hooray;
                     enter(Mode.SAY);
                 } else {
                     redrawIn(HOP_MS);
