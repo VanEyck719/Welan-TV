@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tv.inicio.launcher"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <!-- Target 29: no package-visibility filtering, so every installed app is listed. -->
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29" />
+    <!-- Weather: ipwho.is (city from IP, once) and api.open-meteo.com, both HTTPS. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Rotating wallpapers from Pictures/Fondos (target 29 + legacy storage). -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
+    <application
+        android:label="Inicio"
+        android:icon="@drawable/fondo"
+        android:banner="@drawable/fondo"
+        android:allowBackup="false"
+        android:requestLegacyExternalStorage="true">
+
+        <activity
+            android:name=".InicioActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:stateNotNeeded="true"
+            android:excludeFromRecents="true"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|uiMode"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Google TV re-enables its launcher on boot; this swaps it for ours when it appears. -->
+        <service
+            android:name=".HomeGuard"
+            android:label="Inicio"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/home_guard" />
+        </service>
+    </application>
+</manifest>

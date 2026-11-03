@@ -1,0 +1,39 @@
+# Apps that debloat.ps1 removes from a TCL TV. Delete a line to keep that app.
+# What each one does: docs/DEBLOAT.md
+
+# Advertising and statistics
+com.tcl.bi
+com.tcl.overseasappshow
+com.tcl.waterfall.overseas
+com.tcl.channelplus
+com.tcl.messagebox
+com.tcl.esticker
+com.tcl.logkit
+android.autoinstalls.config.google.gtvpai
+
+# TCL apps
+com.tcl.ocean.instructions
+com.tcl.usercenter
+com.tcl.browser
+com.tcl.hearaid
+com.tcl.gamebar
+com.tcl.magiconnectfree
+com.tcl.smartalexa
+com.tcl.guard
+com.tcl.gallery
+com.tcl.ui_mediaCenter
+com.tcl.t_solo
+com.tcl.dashboard
+com.tcl.partnercustomizer
+
+# Google, Android and other apps
+com.google.android.play.games
+com.google.android.feedback
+com.google.android.marvin.talkback
+com.google.android.youtube.tvmusic
+com.android.camera2
+com.android.messaging
+com.android.printspooler
+org.chromium.webview_shell
+au.com.stan.and
+tv.wuaki.apptv

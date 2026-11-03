@@ -1,0 +1,15 @@
+# Compilado
+build/
+apk/
+*.apk
+*.idsig
+*.dex
+*.class
+
+# Claves de firma: nunca se suben
+*.keystore
+*.jks
+
+# Datos locales
+.env
+*.log

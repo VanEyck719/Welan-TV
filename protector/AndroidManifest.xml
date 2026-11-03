@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tv.inicio.protector"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <!-- Target 29 + legacy storage so the screensaver can read Movies/Protector. -->
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Weather over HTTPS. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
+    <application
+        android:label="Protector"
+        android:icon="@drawable/fondo"
+        android:allowBackup="false"
+        android:requestLegacyExternalStorage="true">
+
+        <service
+            android:name=".ProtectorDream"
+            android:exported="true"
+            android:label="Inicio"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
